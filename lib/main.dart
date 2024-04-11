@@ -107,7 +107,7 @@ class _MyHomePageState extends State<MyHomePage> {
           mainAxisAlignment: MainAxisAlignment.end,
           children: <Widget>[
             const Text('Choose language'),
-            const Text('then click the mic button to start translation'),
+            const Text('then click the start button to start translation'),
             const Text(
               '(please select from Chinese to English)',
               style: TextStyle(fontSize: 20, color: Colors.orange),
