@@ -39,7 +39,8 @@ class _TranslationPageState extends State<TranslationPage> {
       int i = 0;
       int j=0;
       Timer.periodic(Duration(seconds: 4), (timer) {
-        setState(() {
+        if(this.mounted){
+          setState(() {
           messages.add(Message(text: chinese[i], isMe: true));
           listViewScrollController.animateTo(
             listViewScrollController.position.maxScrollExtent+300,
@@ -73,6 +74,8 @@ class _TranslationPageState extends State<TranslationPage> {
             }
           });
         });
+        }
+        
 
 
         if (i < chinese.length - 1) {
