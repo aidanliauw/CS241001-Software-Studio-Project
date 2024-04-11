@@ -1,7 +1,9 @@
+import 'package:flag/flag.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
-
+import 'package:softwarestudio/translation_page.dart';
 void main() {
   runApp(const MyApp());
 }
@@ -30,7 +32,39 @@ class MyApp extends StatelessWidget {
         //
         // This works for code too, not just values: Most code changes can be
         // tested with just a hot reload.
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        colorScheme: const ColorScheme(
+          brightness: Brightness.dark,
+          primary: Color(0xFF4CD9E0),
+          onPrimary: Color(0xFF003739),
+          primaryContainer: Color(0xFF004F52),
+          onPrimaryContainer: Color(0xFF6FF6FD),
+          secondary: Color(0xFFB1CCCD),
+          onSecondary: Color(0xFF1B3436),
+          secondaryContainer: Color(0xFF324B4C),
+          onSecondaryContainer: Color(0xFFCCE8E9),
+          tertiary: Color(0xFFB5C7E9),
+          onTertiary: Color(0xFF1F314C),
+          tertiaryContainer: Color(0xFF364764),
+          onTertiaryContainer: Color(0xFFD5E3FF),
+          error: Color(0xFFFFB4AB),
+          errorContainer: Color(0xFF93000A),
+          onError: Color(0xFF690005),
+          onErrorContainer: Color(0xFFFFDAD6),
+          background: Color(0xFF191C1C),
+          onBackground: Color(0xFFE0E3E3),
+          surface: Color(0xFF191C1C),
+          onSurface: Color(0xFFE0E3E3),
+          surfaceVariant: Color(0xFF3F4949),
+          onSurfaceVariant: Color(0xFFBEC8C9),
+          outline: Color(0xFF899393),
+          onInverseSurface: Color(0xFF191C1C),
+          inverseSurface: Color(0xFFE0E3E3),
+          inversePrimary: Color(0xFF00696D),
+          shadow: Color(0xFF000000),
+          surfaceTint: Color(0xFF4CD9E0),
+          outlineVariant: Color(0xFF3F4949),
+          scrim: Color(0xFF000000),
+        ),
         useMaterial3: true,
       ),
       home: const MyHomePage(title: 'realtime translation app'),
@@ -58,94 +92,126 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
-    });
-  }
+  Flag fromLanguageFlag = Flag.fromString('xx', height: 80, width: 100, fit: BoxFit.fill);
+  Flag toLanguageFlag = Flag.fromString('xx', height: 80, width: 100, fit: BoxFit.fill);
 
   @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
     return Scaffold(
       appBar: AppBar(
-        // TRY THIS: Try changing the color here to a specific color (to
-        // Colors.amber, perhaps?) and trigger a hot reload to see the AppBar
-        // change color while the other colors stay the same.
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
         title: Text(widget.title),
       ),
       body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
         child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          //
-          // TRY THIS: Invoke "debug painting" (choose the "Toggle Debug Paint"
-          // action in the IDE, or press "p" in the console), to see the
-          // wireframe for each widget.
           mainAxisAlignment: MainAxisAlignment.end,
           children: <Widget>[
+            const Text('Choose language'),
+            const Text('then click the mic button to start translation'),
             const Text(
-              'You have pushed the button this many times:',
+              '(please select from Chinese to English)',
+              style: TextStyle(fontSize: 20, color: Colors.orange),
             ),
             Text(
               '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
+              style: Theme.of(context).textTheme.headline6,
             ),
-            
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children:<Widget> [
+              children: <Widget>[
+                Column(
+                  children: <Widget>[
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text('From:'),
+                    ),
+                    PopupMenuButton<String>(
+                      child: fromLanguageFlag,
+                      onSelected: (String value) {
+                        setState(() {
+                          switch (value) {
+                            case 'Traditional Chinese':
+                              fromLanguageFlag = Flag.fromString('tw', height: 80, width: 100, fit: BoxFit.fill);
+                              break;
+                            case 'English(United States)':
+                              fromLanguageFlag = Flag.fromString('us', height: 80, width: 100, fit: BoxFit.fill);
+                              break;
+                          }
+                        });
+                      },
+                      itemBuilder: (BuildContext context) {
+                        return <PopupMenuEntry<String>>[
+                          const PopupMenuItem<String>(
+                            value: 'Traditional Chinese',
+                            child: Text('Traditional Chinese'),
+                          ),
+                          const PopupMenuItem<String>(
+                            value: 'English(United States)',
+                            child: Text('English(United States)'),
+                          ),
+                        ];
+                      },
+                    ),
+                  ],
+                ),
                 Container(
-                  width: 120.0,
-                  height: 80.0,
-                  child: ColoredBox(color: Colors.red,
+                  decoration: BoxDecoration(color:Theme.of(context).colorScheme.primary,shape: BoxShape.circle ),
+                  child: IconButton(
+                    color: Theme.of(context).colorScheme.onPrimary,
+                    iconSize: 30,
+                    icon: Icon(Icons.play_arrow),
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => TranslationPage()),
+                      );
+                    },
                   ),
                 ),
-                Icon(Icons.mic),
-                Container(
-                  width: 120.0,
-                  height: 80.0,
-                  child: ColoredBox(color: Colors.red,
-                  ),
+                Column(
+                  children: <Widget>[
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text('To:'),
+                    ),
+                    PopupMenuButton<String>(
+                      child: toLanguageFlag,
+                      onSelected: (String value) {
+                        setState(() {
+                          switch (value) {
+                            case 'Traditional Chinese':
+                              toLanguageFlag = Flag.fromString('tw', height: 80, width: 100, fit: BoxFit.fill);
+                              break;
+                            case 'English(United States)':
+                              toLanguageFlag = Flag.fromString('us', height: 80, width: 100, fit: BoxFit.fill);
+                              break;
+                          }
+                        });
+                      },
+                      itemBuilder: (BuildContext context) {
+                        return <PopupMenuEntry<String>>[
+                          const PopupMenuItem<String>(
+                            value: 'Traditional Chinese',
+                            child: Text('Traditional Chinese'),
+                          ),
+                          const PopupMenuItem<String>(
+                            value: 'English(United States)',
+                            child: Text('English(United States)'),
+                          ),
+                        ];
+                      },
+                    ),
+                  ],
                 ),
               ],
             ),
-            SizedBox(
-              width:10,
-              height:10.0,
+            const SizedBox(
+              width: 10,
+              height: 10.0,
             )
           ],
         ),
       ),
-      
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }
