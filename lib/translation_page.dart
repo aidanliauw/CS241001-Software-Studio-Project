@@ -31,7 +31,7 @@ class _TranslationPageState extends State<TranslationPage> {
     'In this demo, we use Flutter\'s Flow widget to move the images inside card widgets.',
     'The images move based on the position of cards on the screen, creating a parallax scrolling effect between the images and the cards.',
   ];
-
+  bool messageIsGenerating=false;
   String response='';
   void _sendMessage(String text) {
   Future.delayed(Duration(seconds: 0), () {
@@ -49,7 +49,7 @@ class _TranslationPageState extends State<TranslationPage> {
             curve: Curves.easeInOut,
           );
           j=i;
-          Future.delayed(Duration(seconds: 2), () {
+          Future.delayed(Duration(milliseconds: 1500), () {
             if (i < chinese.length) {
               setState(() {
                 messages.add(Message(text: english[j], isMe: false));
@@ -67,6 +67,7 @@ class _TranslationPageState extends State<TranslationPage> {
                   buttonColor=Theme.of(context).colorScheme.primary;
                   buttonIcon=Icons.pause;
                   isplay=false;
+                  messageIsGenerating=false;
                 });
               }
             }
@@ -151,7 +152,11 @@ Widget _buildMainButton() {
               iconSize: 30,
               icon: Icon(buttonIcon),
               onPressed: () {
-                setState(() {
+                if(messageIsGenerating){
+
+                }
+                else{
+                  setState(() {
                   isplay=!isplay;
                   if(isplay){
                     buttonIcon = Icons.square;
@@ -164,7 +169,9 @@ Widget _buildMainButton() {
                     buttonIconColor=Theme.of(context).colorScheme.primary;
                   }
                   _sendMessage('test');
-                });
+                  messageIsGenerating=true;
+                  });
+                }
               },
             ),
           ),
