@@ -1,5 +1,5 @@
 import 'dart:convert';
-import 'package:http/http.dart' as http;
+/*import 'package:http/http.dart' as http;
 
 class ChatService {
   final String inputText;
@@ -58,3 +58,4 @@ void main() async {
     print('Error: $e');
   }
 }
+*/
